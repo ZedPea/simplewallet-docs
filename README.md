@@ -79,3 +79,127 @@ As you can see, we can send both string constants and string variables to it. We
 It'll look something like this when it actually gets printed out with all the formatting.
 
 ![logger example message](logger.png?raw=true "Logger example message")
+
+### refresh_progress_reporter_t
+
+Simplewallet has a class inside of it, refresh_progress_reporter_t. This can be useful to hide implementation details if the classes are tighly coupled, so users don't start using the API and prevent it from being changed. Not sure if we're going to document this or not?
+
+## Public Functions
+
+### simple_wallet(System::Dispatcher &dispatcher, const CryptoNote::Currency &currency, Logging::LoggerManager &log) - Constructor
+
+Enter description here...
+
+### bool init(const boost::program_options::variables_map &vm)
+
+### bool deinit()
+
+### bool run()
+
+### void stop()
+
+### bool process_command(const std::vector<std::string> &args)
+
+### std::string get_commands_str()
+
+### const CryptoNote::Currency & currency() const
+
+## Private Functions
+
+### Logging::LoggerMessage success_msg_writer(bool color = false)
+
+### Logging::LoggerMessage fail_msg_writer() const
+
+### void handle_command_line(const boost::program_options::variables_map& vm);
+
+### bool run_console_handler();
+
+### bool new_wallet(const std::string &wallet_file, const std::string& password);
+
+### bool new_wallet(Crypto::SecretKey &secret_key, Crypto::SecretKey &view_key, const std::string &wallet_file, const std::string& password);
+
+### bool open_wallet(const std::string &wallet_file, const std::string& password);
+
+### bool close_wallet();
+
+### bool help(const std::vector<std::string> &args = std::vector<std::string>());
+
+### bool exit(const std::vector<std::string> &args);
+
+### bool start_mining(const std::vector<std::string> &args);
+
+### bool stop_mining(const std::vector<std::string> &args);
+
+### bool show_balance(const std::vector<std::string> &args = std::vector<std::string>());
+
+### bool export_keys(const std::vector<std::string> &args = std::vector<std::string>());
+
+### bool show_incoming_transfers(const std::vector<std::string> &args);
+
+### bool show_payments(const std::vector<std::string> &args);
+
+### bool show_blockchain_height(const std::vector<std::string> &args);
+
+### bool listTransfers(const std::vector<std::string> &args);
+
+### bool transfer(const std::vector<std::string> &args);
+
+### bool print_address(const std::vector<std::string> &args = std::vector<std::string>());
+
+### bool print_outputs_from_transaction(const std::vector<std::string> &args);
+
+### bool save(const std::vector<std::string> &args);
+
+### bool reset(const std::vector<std::string> &args);
+
+### bool set_log(const std::vector<std::string> &args);
+
+### bool ask_wallet_create_if_needed();
+
+### std::string generate_mnemonic(Crypto::SecretKey &);
+
+### void log_incorrect_words(std::vector<std::string>);
+
+### bool is_valid_mnemonic(std::string &, Crypto::SecretKey &);
+
+### void printConnectionError() const;
+
+### virtual void initCompleted(std::error_code result) override;
+
+### virtual void externalTransactionCreated(CryptoNote::TransactionId transactionId) override;
+
+### virtual void synchronizationCompleted(std::error_code result) override;
+
+### virtual void synchronizationProgressUpdated(uint32_t current, uint32_t total) override;
+
+### virtual void connectionStatusUpdated(bool connected) override;
+
+## Private Variables
+
+As previously mentioned simplewallet makes heavy use of global header variables.
+
+* std::string m_wallet_file_arg;
+* std::string m_generate_new;
+* std::string m_import_new;
+* std::string m_import_path;
+* std::string m_daemon_address;
+* std::string m_daemon_host;
+* uint16_t m_daemon_port;
+* std::string m_wallet_file;
+* std::string m_restore_view;
+* std::string m_restore_spend;
+* bool sync_from_zero;
+* bool exit_after_generate;
+* uint64_t sync_from_height; 
+* std::unique_ptr<std::promise<std::error_code>> m_initResultPromise;
+* Common::ConsoleHandler m_consoleHandler;
+* const CryptoNote::Currency& m_currency;
+* Logging::LoggerManager& logManager;
+* System::Dispatcher& m_dispatcher;
+* Logging::LoggerRef logger;
+* std::unique_ptr<CryptoNote::NodeRpcProxy> m_node;
+* std::unique_ptr<CryptoNote::IWalletLegacy> m_wallet;
+* refresh_progress_reporter_t m_refresh_progress_reporter;
+* bool m_walletSynchronized;
+* std::mutex m_walletSynchronizedMutex;
+* std::condition_variable m_walletSynchronizedCV;
