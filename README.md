@@ -75,3 +75,7 @@ It's very simple to use the logger object, we can just write to it the same way 
 ```
 
 As you can see, we can send both string constants and string variables to it. We don't need to add a `std::endl` to the end, as each separate logger invocation is printed on a newline.
+
+It'll look something like this when it actually gets printed out with all the formatting.
+
+![logger example message](logger.png?raw=true "Logger example message")
